@@ -19,8 +19,21 @@ export class UserController {
     }
   }
 
-  static async create(req: Request, res: Response) {
+  static async register(req: Request, res: Response) {
     try {
+      const { name, email, password } = req.body;
+
+      await prisma.user.create({
+        data: {
+          email,
+          password,
+          name,
+        },
+      });
+      return res.status(200).json({
+        sucess: true,
+        data: "successfully created",
+      });
     } catch (error) {
       return res.status(400).json({
         sucess: false,
