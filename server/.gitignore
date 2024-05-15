@@ -1,2 +1,6 @@
 /node_modules
 /.env
+/.eslintrc.json
+/eslint.config.mjs
+/.prettierrc.js
+/eslint.config.js
