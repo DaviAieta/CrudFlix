@@ -2,7 +2,7 @@ import express from 'express'
 import userRotues from './routes/user.routes'
 
 const app = express()
-const PORT = 3000
+const PORT = 3333
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
