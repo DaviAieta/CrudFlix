@@ -31,7 +31,7 @@ export async function ListUsers(props: typeProps) {
       </TableHeader>
       <TableBody>
         {props.data
-          .filter((item) => item.name === props.searchUser)
+          .filter((item) => item.name.includes(props.searchUser))
           .map((item: any, index: number) => (
             <TableRow key={index}>
               <TableCell>{item.id}</TableCell>
