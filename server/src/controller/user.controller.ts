@@ -9,7 +9,18 @@ const prisma = new PrismaClient()
 export class UserController {
   static async list(req: Request, res: Response) {
     try {
-      const users = await prisma.user.findMany()
+      const { name } = req.query
+      let users = await prisma.user.findMany()
+
+      if (name) {
+        users = await prisma.user.findMany({
+          where: {
+            name: {
+              contains: name.toString(),
+            },
+          },
+        })
+      }
       return res.status(200).json({
         sucess: true,
         data: users,
@@ -17,7 +28,7 @@ export class UserController {
     } catch (error) {
       return res.status(400).json({
         sucess: false,
-        error,
+        data: error,
       })
     }
   }

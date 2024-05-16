@@ -19,7 +19,6 @@ export function NavBar() {
           <LogOut />
         </Link>
       </div>
-
       <div className="grow">
         <div className="flex items-center justify-center gap-6">
           <Link href="/users" className="hover:underline">

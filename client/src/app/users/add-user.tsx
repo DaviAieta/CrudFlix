@@ -27,8 +27,6 @@ import { AddTagButton } from './add-user-button'
 
 export function AddUser() {
   async function handleCreateUser(form: FormData) {
-    'use server'
-
     try {
       const name = form.get('name')
       const email = form.get('email')
