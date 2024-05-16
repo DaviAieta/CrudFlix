@@ -18,10 +18,10 @@ export type User = {
 
 export async function Users() {
   const [searchUser, setSearchUser] = useState<string>('')
-  const [data, setData] = useState<object>({})
+  const [data, setData] = useState<User[]>([])
 
-  fetch('http://localhost:3333/users').then((response) =>
-    setData(response.body.json())
+  fetch('http://localhost:3333/users').then(async (response) =>
+    setData((await response.json()) as User[])
   )
 
   return (
