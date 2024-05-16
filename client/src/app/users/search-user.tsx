@@ -3,8 +3,8 @@
 /* eslint-disable react/react-in-jsx-scope */
 
 import { Search } from 'lucide-react'
-import { Input } from '../../../components/ui/input'
-import { Button } from '../../../components/ui/button'
+import { Input } from '../../components/ui/input'
+import { Button } from '../../components/ui/button'
 
 export async function SearchUser() {
   return (

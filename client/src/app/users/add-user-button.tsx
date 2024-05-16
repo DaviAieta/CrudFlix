@@ -5,7 +5,7 @@
 'use client'
 
 import { useFormStatus } from 'react-dom'
-import { Button } from '../../../components/ui/button'
+import { Button } from '../../components/ui/button'
 
 export function AddTagButton() {
   const { pending } = useFormStatus()

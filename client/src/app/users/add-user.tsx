@@ -8,7 +8,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue
-} from '../../../components/ui/select'
+} from '../../components/ui/select'
 import {
   Dialog,
   DialogContent,
@@ -17,13 +17,12 @@ import {
   DialogDescription,
   DialogFooter,
   DialogClose
-} from '../../../components/ui/dialog'
-import { Button } from '../../../components/ui/button'
-import { Input } from '../../../components/ui/input'
-import { Label } from '../../../components/ui/label'
+} from '../../components/ui/dialog'
+import { Button } from '../../components/ui/button'
+import { Input } from '../../components/ui/input'
+import { Label } from '../../components/ui/label'
 import { PlusCircle } from 'lucide-react'
 import { revalidateTag } from 'next/cache'
-import { Alert } from '../../../components/ui/alert'
 import { AddTagButton } from './add-user-button'
 
 export function AddUser() {
@@ -63,12 +62,12 @@ export function AddUser() {
       <DialogTrigger asChild>
         <Button>
           <PlusCircle className="w-4 h-4 mr-2" />
-          Registar Usuario
+          Registar Usuário
         </Button>
       </DialogTrigger>
       <DialogContent>
-        <DialogTitle>Novo Usuario</DialogTitle>
-        <DialogDescription>Criar novo usuario no sistema</DialogDescription>
+        <DialogTitle>Novo Usuário</DialogTitle>
+        <DialogDescription>Criar novo usuários no sistema</DialogDescription>
         <form action={handleCreateUser} method="POST" className="space-y-6">
           <div className="grid grid-cols-4 items-center text-right gap-4">
             <Label>Nome</Label>
@@ -90,9 +89,7 @@ export function AddUser() {
           </div>
           <DialogFooter>
             <DialogClose asChild>
-              <Button type="submit" variant="destructive">
-                Cancelar
-              </Button>
+              <Button variant="destructive">Cancelar</Button>
             </DialogClose>
             <AddTagButton />
           </DialogFooter>
