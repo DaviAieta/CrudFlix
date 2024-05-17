@@ -6,7 +6,7 @@
 import { AddUser } from './add-user'
 import { ListUsers } from './list-user'
 import { SearchUser } from './search-user'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export type User = {
   id: number
@@ -20,9 +20,13 @@ export async function Users() {
   const [searchUser, setSearchUser] = useState<string>('')
   const [data, setData] = useState<User[]>([])
 
-  fetch('http://localhost:3333/users').then(async (response) =>
-    setData((await response.json()) as User[])
-  )
+  useEffect(() => {
+    const getData = async () =>{
+    fetch('http://localhost:3333/users').then(async (response) =>
+    setData((await response.json()) as User[])}
+
+    getData()
+  }), [])
 
   return (
     <div className="p-6 max-w-4xl mx-auto space-y-4">
