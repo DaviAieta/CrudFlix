@@ -1,13 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react/react-in-jsx-scope */
+import { UsersList } from "./_components/users-list";
 
-import { Users } from './index'
-
-export default function UserPage() {
-  return (
-    <>
-      <Users />
-    </>
-  )
+export default function Page() {
+  return <UsersList />;
 }
