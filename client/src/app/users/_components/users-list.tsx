@@ -1,5 +1,4 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
@@ -7,6 +6,17 @@ import { CardContent, Card } from "@/components/ui/card";
 import { useState, useEffect } from "react";
 import { Search, PlusCircle, UserRound } from "lucide-react";
 import Link from "next/link";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/components/ui/use-toast";
 
 export type User = {
   id: number;
@@ -16,11 +26,16 @@ export type User = {
 
 export function UsersList() {
   const [users, setUsers] = useState<User[]>([]);
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [userId, setUserId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const { toast } = useToast();
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    async function fetchUsers() {
+    async function listUsers() {
       try {
         const response = await fetch("http://localhost:3333/users");
         const data = await response.json();
@@ -32,8 +47,39 @@ export function UsersList() {
       }
     }
 
-    fetchUsers();
+    listUsers();
   }, []);
+
+  const updateUser = async (e: any) => {
+    e.preventDefault();
+    setSubmitting(true);
+
+    try {
+      const response = await fetch(`http://localhost:3333/users/update`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: userId,
+          name,
+          email,
+        }),
+      });
+      if (response.ok) {
+        console.log(name, email, userId);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        toast({
+          title: "Account updated successfully",
+          description: `Successfully changed data`,
+        });
+      }
+    } catch (error) {
+      console.error("Error updating user:", error);
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -74,22 +120,86 @@ export function UsersList() {
             key={user.id}
             className="transform transition-transform duration-300 hover:scale-105"
           >
-            <Link href={`/users/${user.id}`}>
-              <CardContent className="flex flex-col items-center justify-center p-6">
-                <Avatar className="mb-4">
-                  <AvatarImage alt={user.name} />
-                  <AvatarFallback>
-                    <UserRound />
-                  </AvatarFallback>
-                </Avatar>
-                <div className="text-center">
-                  <div className="font-medium">{user.name}</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
-                    {user.email}
+            <Dialog>
+              <DialogTrigger
+                onClick={() => {
+                  setUserId(user.id);
+                  setEmail(user.email);
+                  setName(user.name);
+                }}
+              >
+                <CardContent className="flex flex-col items-center justify-center p-6">
+                  <Avatar className="mb-4">
+                    <AvatarImage alt={user.name} />
+                    <AvatarFallback>
+                      <UserRound />
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="text-center">
+                    <div className="font-medium">{user.name}</div>
+                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                      {user.email}
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Link>
+                </CardContent>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Profile</DialogTitle>
+                  <DialogDescription>
+                    Make changes to your profile here. Click save when youre
+                    done.
+                  </DialogDescription>
+                </DialogHeader>
+                <form className="space-y-4" onSubmit={updateUser}>
+                  <div className="grid gap-4 py-4">
+                    <div className="grid grid-cols-4 items-center gap-4">
+                      <Label htmlFor="name" className="text-right">
+                        ID
+                      </Label>
+                      <Input
+                        id="name"
+                        defaultValue={user.id}
+                        className="col-span-3"
+                        value={user.id}
+                        disabled
+                      />
+                    </div>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                      <Label htmlFor="name" className="text-right">
+                        Name
+                      </Label>
+                      <Input
+                        id="name"
+                        defaultValue={user.name}
+                        onChange={(e) => {
+                          setName(e.target.value);
+                        }}
+                        className="col-span-3"
+                      />
+                    </div>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                      <Label htmlFor="email" className="text-right">
+                        E-mail
+                      </Label>
+                      <Input
+                        id="email"
+                        defaultValue={user.email}
+                        onChange={(e) => {
+                          setEmail(e.target.value);
+                        }}
+                        className="col-span-3"
+                      />
+                    </div>
+                  </div>
+                  <DialogFooter>
+                    <Button type="submit" disabled={submitting}>
+                      {submitting ? "Loading..." : "Save Changes"}
+                    </Button>{" "}
+                  </DialogFooter>
+                </form>
+              </DialogContent>
+            </Dialog>
           </Card>
         ))}
       </div>

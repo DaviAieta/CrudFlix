@@ -1,3 +1,3 @@
-import bcrypt from 'bcrypt'
-
-export class Utils {}
+export class Utils {
+  static async sendEmail() {}
+}

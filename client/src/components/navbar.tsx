@@ -23,15 +23,15 @@ export function NavBar() {
         </Link>
         <Link
           className="transition-colors hover:text-gray-600 focus:text-gray-600"
-          href="#"
+          href="/auth/login"
         >
-          Services
+          Login
         </Link>
         <Link
           className="transition-colors hover:text-gray-600 focus:text-gray-600"
           href="#"
         >
-          Contact
+          logout
         </Link>
       </nav>
     </header>
