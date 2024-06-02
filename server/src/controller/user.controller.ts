@@ -13,11 +13,12 @@ export class UserController {
   }
 
   static async create(req: Request, res: Response) {
-    const { name, email } = req.body
+    const { name, email, password, birth_date } = req.body
+    console.log(name, email, password, birth_date)
 
-    if (!name || !email) {
+    if (!name || !email || !password || !birth_date) {
       return res.status(400).send({
-        error: 'Name and email are required',
+        error: 'Name, email and birth date are required',
       })
     }
 
@@ -40,6 +41,8 @@ export class UserController {
       data: {
         name,
         email,
+        password,
+        birth_date,
       },
     })
     res.send(user)
@@ -47,7 +50,6 @@ export class UserController {
 
   static async update(req: Request, res: Response) {
     const { id, name, email } = req.body
-    console.log(id, name, email)
 
     if (!name || !email) {
       return res.status(400).send({
@@ -62,8 +64,6 @@ export class UserController {
     if (email) {
       userData.email = email
     }
-
-    console.log(userData)
 
     const user = await prisma.user.update({
       where: { id: Number(id) },

@@ -6,8 +6,9 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 
-export function AuthRegister() {
+export function AuthLogin() {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const { toast } = useToast();
 
@@ -16,20 +17,21 @@ export function AuthRegister() {
     setSubmitting(true);
 
     try {
-      const response = await fetch("http://localhost:3333/auth/sendMagicLink", {
+      const response = await fetch("http://localhost:3333/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           email,
+          password,
         }),
       });
       if (response.ok) {
         await new Promise((resolve) => setTimeout(resolve, 3000));
         toast({
-          title: "Email successfully sent",
-          description: `E-mail ${email}`,
+          title: "Login successfully",
+          description: `Enjoy Crudflix!`,
         });
       }
     } catch (error) {
@@ -42,12 +44,12 @@ export function AuthRegister() {
   return (
     <div className="flex min-h-[100dvh] justify-center px-4 py-12 mt-10">
       <div className="w-full max-w-md space-y-4">
-        <div className="text-center">
+        <div className="text-center mb-7">
           <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-50">
-            Magic Link Login
+            Login
           </h1>
-          <p className="mt-2 text-gray-600 dark:text-gray-400">
-            Enter your email and to send you a magic link to sign in.
+          <p className="text-gray-500 dark:text-gray-400 mt-3">
+            Enter your email and password to access your account.
           </p>
         </div>
         <form className="space-y-4" onSubmit={handleSubmit}>
@@ -57,7 +59,7 @@ export function AuthRegister() {
             </Label>
             <Input
               id="email"
-              placeholder="Email address"
+              placeholder="m@example.com"
               required
               type="email"
               value={email}
@@ -66,8 +68,23 @@ export function AuthRegister() {
               }}
             />
           </div>
+          <div>
+            <Label className="sr-only" htmlFor="email">
+              Password
+            </Label>
+            <Input
+              id="password"
+              placeholder="enter your password"
+              required
+              type="password"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+            />
+          </div>
           <Button className="w-full" type="submit" disabled={submitting}>
-            {submitting ? "Loading..." : "Create Account"}
+            {submitting ? "Loading..." : "Sign in"}
           </Button>
         </form>
       </div>

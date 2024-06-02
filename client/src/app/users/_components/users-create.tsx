@@ -3,12 +3,14 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 
 export function UsersCreate() {
-  const [email, setEmail] = useState("");
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [birthDate, setBirthDate] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const { toast } = useToast();
 
@@ -25,6 +27,8 @@ export function UsersCreate() {
         body: JSON.stringify({
           name,
           email,
+          password,
+          birthDate,
         }),
       });
       if (response.ok) {
@@ -56,11 +60,11 @@ export function UsersCreate() {
             <Input
               id="name"
               placeholder="John Doe"
-              required
               value={name}
               onChange={(e) => {
                 setName(e.target.value);
               }}
+              required
             />
           </div>
           <div className="space-y-2">
@@ -68,12 +72,37 @@ export function UsersCreate() {
             <Input
               id="email"
               placeholder="john@example.com"
-              required
               type="email"
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
               }}
+              required
+            />
+          </div>
+          <div className="space-y-2">
+            <Input
+              id="password"
+              placeholder="password"
+              type="password"
+              value={password}
+              autoComplete="off"
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+              required
+            />
+          </div>
+          <div className="space-y-">
+            <Input
+              id="birth_date"
+              placeholder="27/09/2009"
+              maxLength={10}
+              value={birthDate}
+              onChange={(e) => {
+                setBirthDate(e.target.value);
+              }}
+              required
             />
           </div>
         </div>

@@ -67,7 +67,6 @@ export function UsersList() {
         }),
       });
       if (response.ok) {
-        console.log(name, email, userId);
         await new Promise((resolve) => setTimeout(resolve, 3000));
         toast({
           title: "Account updated successfully",
