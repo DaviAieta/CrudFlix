@@ -28,7 +28,7 @@ export function UsersCreate() {
           name,
           email,
           password,
-          birthDate,
+          birth_date: birthDate,
         }),
       });
       if (response.ok) {
@@ -93,7 +93,7 @@ export function UsersCreate() {
               required
             />
           </div>
-          <div className="space-y-">
+          <div className="space-y-2">
             <Input
               id="birth_date"
               placeholder="27/09/2009"

@@ -5,12 +5,15 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 export function AuthLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const { toast } = useToast();
+  const router = useRouter();
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -28,11 +31,17 @@ export function AuthLogin() {
         }),
       });
       if (response.ok) {
+        const data = await response.json();
+        const token = data.login_token;
+
+        Cookies.set("auth_token", token, { expires: 30 });
+
         await new Promise((resolve) => setTimeout(resolve, 3000));
         toast({
           title: "Login successfully",
           description: `Enjoy Crudflix!`,
         });
+        router.push("/movies");
       }
     } catch (error) {
       console.error("Error creating user:", error);

@@ -24,7 +24,7 @@ export type User = {
   email: string;
 };
 
-export function UsersList() {
+export function Users() {
   const [users, setUsers] = useState<User[]>([]);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -34,21 +34,17 @@ export function UsersList() {
   const { toast } = useToast();
   const [submitting, setSubmitting] = useState(false);
 
-  useEffect(() => {
-    async function listUsers() {
-      try {
-        const response = await fetch("http://localhost:3333/users");
-        const data = await response.json();
-        setUsers(data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-        setLoading(false);
-      }
+  async function listUsers() {
+    try {
+      const response = await fetch("http://localhost:3333/users");
+      const data = await response.json();
+      setUsers(data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      setLoading(false);
     }
-
-    listUsers();
-  }, []);
+  }
 
   const updateUser = async (e: any) => {
     e.preventDefault();
@@ -67,11 +63,12 @@ export function UsersList() {
         }),
       });
       if (response.ok) {
-        await new Promise((resolve) => setTimeout(resolve, 3000));
+        await new Promise((resolve) => setTimeout(resolve, 2000));
         toast({
           title: "Account updated successfully",
           description: `Successfully changed data`,
         });
+        await listUsers();
       }
     } catch (error) {
       console.error("Error updating user:", error);
@@ -79,6 +76,10 @@ export function UsersList() {
       setSubmitting(false);
     }
   };
+
+  useEffect(() => {
+    listUsers();
+  }, []);
 
   if (loading) {
     return (

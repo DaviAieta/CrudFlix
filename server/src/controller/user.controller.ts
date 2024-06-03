@@ -1,5 +1,7 @@
 import { Request, Response } from 'express'
 import { prisma } from '../lib/prisma'
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
 export type UserData = {
   name?: string
@@ -14,7 +16,6 @@ export class UserController {
 
   static async create(req: Request, res: Response) {
     const { name, email, password, birth_date } = req.body
-    console.log(name, email, password, birth_date)
 
     if (!name || !email || !password || !birth_date) {
       return res.status(400).send({
@@ -37,12 +38,14 @@ export class UserController {
       })
     }
 
+    const hashPassword = await bcrypt.hash(password, 10)
     const user = await prisma.user.create({
       data: {
         name,
         email,
-        password,
+        password: hashPassword,
         birth_date,
+        login_token: '',
       },
     })
     res.send(user)
@@ -70,5 +73,30 @@ export class UserController {
       data: userData,
     })
     return res.send(user)
+  }
+
+  static async getUserName(req: Request, res: Response) {
+    const token = req.headers.authorization?.split(' ')[1]
+    console.log(token)
+
+    if (!token) {
+      return res.status(401).send({
+        error: 'Authorization token not provided',
+      })
+    }
+    const decodedToken: any = jwt.verify(token, '123pass123')
+    console.log(decodedToken)
+
+    const user = await prisma.user.findUnique({
+      where: { id: decodedToken.id },
+    })
+
+    if (!user) {
+      return res.status(404).send({
+        error: 'User not found',
+      })
+    }
+
+    res.send(user)
   }
 }
