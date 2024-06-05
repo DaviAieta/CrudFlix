@@ -20,7 +20,7 @@ export function AuthLogin() {
     setSubmitting(true);
 
     try {
-      const response = await fetch("http://localhost:3333/auth/login", {
+      const response = await fetch("http://localhost:3333/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -37,11 +37,11 @@ export function AuthLogin() {
         Cookies.set("auth_token", token, { expires: 30 });
 
         await new Promise((resolve) => setTimeout(resolve, 3000));
+        router.push("/movies");
         toast({
           title: "Login successfully",
           description: `Enjoy Crudflix!`,
         });
-        router.push("/movies");
       }
     } catch (error) {
       console.error("Error creating user:", error);

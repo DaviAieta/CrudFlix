@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
+import Cookies from "js-cookie";
 
 export type User = {
   id: number;
@@ -36,10 +37,16 @@ export function Users() {
 
   async function listUsers() {
     try {
-      const response = await fetch("http://localhost:3333/users");
+      const response = await fetch("http://localhost:3333/users", {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("auth_token")}`,
+        },
+      });
       const data = await response.json();
-      setUsers(data);
-      setLoading(false);
+      if (response.ok) {
+        setUsers(data);
+        setLoading(false);
+      }
     } catch (error) {
       console.error("Error fetching users:", error);
       setLoading(false);
@@ -54,6 +61,7 @@ export function Users() {
       const response = await fetch(`http://localhost:3333/users/update`, {
         method: "POST",
         headers: {
+          Authorization: `Bearer ${Cookies.get("auth_token")}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({

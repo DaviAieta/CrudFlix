@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
+import Cookies from "js-cookie";
 
 export function UsersCreate() {
   const [name, setName] = useState("");
@@ -22,6 +23,7 @@ export function UsersCreate() {
       const response = await fetch("http://localhost:3333/users/create", {
         method: "POST",
         headers: {
+          Authorization: `Bearer ${Cookies.get("auth_token")}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({

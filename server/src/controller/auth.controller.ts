@@ -4,6 +4,10 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
 export class AuthController {
+  static async auth(req: Request, res: Response) {
+    return res.status(200).json({})
+  }
+
   static async login(req: Request, res: Response) {
     const { email, password } = req.body
 
@@ -36,10 +40,6 @@ export class AuthController {
     const token = jwt.sign(
       {
         id: user.id,
-        email: user.email,
-        name: user.name,
-        birth_date: user.birth_date,
-        created_at: user.createdAt,
       },
       '123pass123',
       { expiresIn: '30d' },

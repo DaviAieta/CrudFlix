@@ -38,38 +38,33 @@ export function NavBar() {
         <span className="sr-only">Acme Inc</span>
       </Link>
       <nav className="flex items-center gap-6 text-sm font-medium">
-        {isLoggedIn ? (
-          <>
-            <span>Hello, {userName}</span>
-            <Link
-              className="transition-colors hover:text-gray-600 focus:text-gray-600"
-              href="/users"
-            >
-              Users
-            </Link>
-            <Link
-              className="transition-colors hover:text-gray-600 focus:text-gray-600"
-              href="/movies"
-            >
-              Movies
-            </Link>
-            <Link
-              className="transition-colors hover:text-gray-600 focus:text-gray-600"
-              href="/auth/logout"
-            >
-              logout
-            </Link>
-          </>
-        ) : (
-          <>
-            <Link
-              className="transition-colors hover:text-gray-600 focus:text-gray-600"
-              href="/auth/login"
-            >
-              Login
-            </Link>
-          </>
-        )}
+        <span>Hello, {userName}</span>
+        <Link
+          className="transition-colors hover:text-gray-600 focus:text-gray-600"
+          href="/users"
+        >
+          Users
+        </Link>
+        <Link
+          className="transition-colors hover:text-gray-600 focus:text-gray-600"
+          href="/movies"
+        >
+          Movies
+        </Link>
+        <Link
+          className="transition-colors hover:text-gray-600 focus:text-gray-600"
+          href="/auth/logout"
+        >
+          logout
+        </Link>
+        <>
+          <Link
+            className="transition-colors hover:text-gray-600 focus:text-gray-600"
+            href="/auth/login"
+          >
+            Login
+          </Link>
+        </>
       </nav>
     </header>
   );

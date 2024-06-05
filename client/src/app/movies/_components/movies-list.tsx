@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/table";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import Cookies from "js-cookie";
 
 export type Movie = {
   id: string;
@@ -29,9 +30,10 @@ export function MoviesList() {
   useEffect(() => {
     async function fetchUsers() {
       try {
-        const response = await fetch("http://localhost:3333/movies");
+        const response = await fetch("http://localhost:3333/movies", {
+          headers: { Authorization: `Bearer ${Cookies.get("auth_token")}` },
+        });
         const data: Movie[] = await response.json();
-        console.log(data);
         setMovies(data);
         setLoading(false);
       } catch (error) {

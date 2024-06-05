@@ -3,8 +3,8 @@ import { MovieController } from '../controller/movie.controller'
 
 const router = Router()
 
-router.get('/movies', MovieController.list)
-router.get('/movies/:movieId', MovieController.findOne)
-router.post('/movies/create', MovieController.create)
+router.get('/', MovieController.list)
+router.get('/:movieId', MovieController.findOne)
+router.post('/create', MovieController.create)
 
 export default router
